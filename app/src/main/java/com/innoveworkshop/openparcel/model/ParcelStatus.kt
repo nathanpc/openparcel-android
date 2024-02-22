@@ -92,7 +92,11 @@ enum class ParcelStatus(
          * @return Appropriate item in the enum.
          */
         fun fromType(type: String, data: JSONObject? = null): ParcelStatus {
-            val status = entries.first { it.type == type }
+            var status = IN_TRANSIT
+            try {
+                status = entries.first { it.type == type }
+            } catch (_: NoSuchElementException) { }
+
             if (data != null)
                 status.data = data
 
