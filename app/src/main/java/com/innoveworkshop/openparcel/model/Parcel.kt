@@ -64,14 +64,7 @@ data class Parcel(
     /**
      * The current progress of the parcel, from creation to delivery.
      */
-    val progress: Float get() {
-        for (update in trackingHistory) {
-            if (update.status != null)
-                return update.status.progress
-        }
-
-        return 0f
-    }
+    val progress: Float get() = trackingHistory[0].status.progress
 
     /**
      * Gets the Material surface color associated with this parcel's carrier.

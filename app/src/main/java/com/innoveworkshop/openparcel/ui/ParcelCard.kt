@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.MailOutline
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -37,7 +35,9 @@ fun ParcelCard(parcel: Parcel, modifier: Modifier = Modifier) {
         colors = CardDefaults.cardColors(
             containerColor = Color(parcel.surfaceColor())
         ),
-        modifier = Modifier.padding(8.dp).then(modifier)
+        modifier = Modifier
+            .padding(8.dp)
+            .then(modifier)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -75,7 +75,7 @@ fun ParcelCard(parcel: Parcel, modifier: Modifier = Modifier) {
                     shape = RoundedCornerShape(50)
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.MailOutline,
+                        imageVector = lastParcelUpdate.status.getIcon(),
                         contentDescription = lastParcelUpdate.status.label,
                         tint = Color(parcel.onSurfaceColor()),
                         modifier = Modifier.padding(8.dp)
