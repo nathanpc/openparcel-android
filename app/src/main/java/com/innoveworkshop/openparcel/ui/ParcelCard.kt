@@ -30,14 +30,14 @@ import com.innoveworkshop.openparcel.utils.DateUtil
 import java.net.URI
 
 @Composable
-fun ParcelCard(parcel: Parcel) {
+fun ParcelCard(parcel: Parcel, modifier: Modifier = Modifier) {
     val lastParcelUpdate = parcel.trackingHistory[0]
 
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color(parcel.surfaceColor())
         ),
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier.padding(8.dp).then(modifier)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -321,6 +321,7 @@ fun ParcelCardJsonPreview() {
               "trackingCode": "CA767344619DE",
               "trackingUrl": "https://www.dhl.com/us-en/home/tracking/tracking-parcel.html?submit=1&tracking-id=CA767344619DE"
             }
-        """.trimIndent())
+        """.trimIndent()
+        )
     )
 }

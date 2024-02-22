@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,17 +23,17 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.innoveworkshop.openparcel.R
 import com.innoveworkshop.openparcel.model.Carrier
 import com.innoveworkshop.openparcel.model.Parcel
 import com.innoveworkshop.openparcel.model.ParcelUpdate
-import com.innoveworkshop.openparcel.ui.theme.OpenparcelTheme
+import com.innoveworkshop.openparcel.ui.theme.AppTheme
 import com.innoveworkshop.openparcel.utils.DateUtil
 import java.net.URI
 
@@ -42,7 +41,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            OpenparcelTheme {
+            AppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -60,9 +59,8 @@ class MainActivity : ComponentActivity() {
 fun MainView(parcels: List<Parcel>) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
-    Scaffold (
+    Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-
         topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -72,14 +70,16 @@ fun MainView(parcels: List<Parcel>) {
                 title = {
                     Image(
                         painter = painterResource(id = R.drawable.ic_logo),
-                        contentDescription = ""
+                        contentDescription = "Open Parcel",
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimaryContainer)
                     )
                 },
                 navigationIcon = {
                      IconButton(onClick = { /* TODO: Open navigation drawer. */ }) {
                          Icon(
                              imageVector = Icons.Filled.Menu,
-                             contentDescription = stringResource(id = R.string.options)
+                             contentDescription = stringResource(id = R.string.options),
+                             tint = MaterialTheme.colorScheme.onPrimaryContainer
                          )
                      }
                 },
@@ -87,18 +87,17 @@ fun MainView(parcels: List<Parcel>) {
                     IconButton(onClick = { /* TODO: Do something. */ }) {
                         Icon(
                             imageVector = Icons.Filled.Add,
-                            contentDescription = stringResource(id = R.string.add_parcel)
+                            contentDescription = stringResource(id = R.string.add_parcel),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     }
                 },
                 scrollBehavior = scrollBehavior
             )
-        },
+        }
     ) { innerPadding ->
         LazyColumn(
-            modifier = Modifier
-                .padding(innerPadding),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(innerPadding)
         ) {
             items(parcels) { parcel ->
                 ParcelCard(parcel = parcel)
@@ -107,10 +106,10 @@ fun MainView(parcels: List<Parcel>) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, apiLevel = 33)
 @Composable
 fun MainViewPreview() {
-    OpenparcelTheme {
+    AppTheme {
         MainView(
             parcels = listOf(
                 Parcel(
