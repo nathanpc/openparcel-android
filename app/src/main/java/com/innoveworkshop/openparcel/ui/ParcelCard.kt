@@ -54,7 +54,7 @@ fun ParcelCard(parcel: Parcel, modifier: Modifier = Modifier) {
             }
 
             LinearProgressIndicator(
-                progress = parcel.progress,
+                progress = { parcel.progress },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
