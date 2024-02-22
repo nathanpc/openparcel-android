@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.innoveworkshop.openparcel.R
 import com.innoveworkshop.openparcel.model.Carrier
 import com.innoveworkshop.openparcel.model.Parcel
+import com.innoveworkshop.openparcel.model.ParcelStatus
 import com.innoveworkshop.openparcel.model.ParcelUpdate
 import com.innoveworkshop.openparcel.ui.theme.AppTheme
 import com.innoveworkshop.openparcel.utils.DateUtil
@@ -114,7 +115,7 @@ fun MainViewPreview() {
             parcels = listOf(
                 Parcel(
                     id = 0,
-                    name = "Panasonic Lumix DMC-GF1",
+                    name = "Macbook Pro (2019)",
                     delivered = false,
                     carrier = Carrier(
                         id = "ctt",
@@ -125,8 +126,9 @@ fun MainViewPreview() {
                     trackingUrl = URI.create("https://www.dhl.com/pt-pt/home/tracking.html?tracking-id=CA767344619DE&submit=1"),
                     trackingHistory = arrayOf(
                         ParcelUpdate(
-                            title = "Order data transmitted electronically",
-                            timestamp = DateUtil.fromISO8601("2024-02-19T07:29:00.000Z")
+                            title = "Customs cleared at SOMEWHERE",
+                            timestamp = DateUtil.fromISO8601("2024-02-19T07:29:00.000Z"),
+                            status = ParcelStatus.CUSTOMS_CLEARED
                         )
                     ),
                     lastUpdated = DateUtil.fromISO8601("2024-02-19T07:29:00.000Z")
@@ -136,15 +138,15 @@ fun MainViewPreview() {
                     name = "Panasonic Lumix DMC-GF1",
                     delivered = false,
                     carrier = Carrier(
-                        id = "ctt",
-                        name = "CTT"
+                        id = "dhl",
+                        name = "DHL"
                     ),
                     color = Color(0xFFFFCC00).toArgb(),
                     trackingCode = "CA767344619DE",
                     trackingUrl = URI.create("https://www.dhl.com/pt-pt/home/tracking.html?tracking-id=CA767344619DE&submit=1"),
                     trackingHistory = arrayOf(
                         ParcelUpdate(
-                            title = "Order data transmitted electronically",
+                            title = "Entered the distribution center for international export",
                             timestamp = DateUtil.fromISO8601("2024-02-19T07:29:00.000Z")
                         )
                     ),
@@ -152,19 +154,20 @@ fun MainViewPreview() {
                 ),
                 Parcel(
                     id = 0,
-                    name = "Panasonic Lumix DMC-GF1",
+                    name = "Meta Quest 3",
                     delivered = false,
                     carrier = Carrier(
-                        id = "ctt",
-                        name = "CTT"
+                        id = "dpd-pt",
+                        name = "DPD (PT)"
                     ),
                     color = Color(0xFFDC1332).toArgb(),
                     trackingCode = "CA767344619DE",
                     trackingUrl = URI.create("https://www.dhl.com/pt-pt/home/tracking.html?tracking-id=CA767344619DE&submit=1"),
                     trackingHistory = arrayOf(
                         ParcelUpdate(
-                            title = "Order data transmitted electronically",
-                            timestamp = DateUtil.fromISO8601("2024-02-19T07:29:00.000Z")
+                            title = "Out for delivery",
+                            timestamp = DateUtil.fromISO8601("2024-02-19T07:29:00.000Z"),
+                            status = ParcelStatus.DELIVERING
                         )
                     ),
                     lastUpdated = DateUtil.fromISO8601("2024-02-19T07:29:00.000Z")
