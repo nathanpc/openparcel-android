@@ -36,7 +36,7 @@ data class Parcel(
          * @return Fully populated parcel object.
          */
         fun fromJson(jsonStr: String): Parcel {
-            val json: JSONObject = JSONObject(jsonStr)
+            val json = JSONObject(jsonStr)
 
             // Check if we have a creation date.
             var creationDate: Date? = null
@@ -55,8 +55,8 @@ data class Parcel(
                 trackingHistory = ParcelUpdate.fromJsonList(json.getJSONArray("history")),
                 creationDate = creationDate,
                 lastUpdated = DateUtil.fromISO8601(json.getString("lastUpdated")),
-                origin = Location.fromJson(json.getJSONObject("origin")),
-                destination = Location.fromJson(json.getJSONObject("destination"))
+                origin = Location.fromJson(json.optJSONObject("origin")),
+                destination = Location.fromJson(json.optJSONObject("destination"))
             )
         }
     }

@@ -23,7 +23,10 @@ data class Location(
          *
          * @return Fully populated location object.
          */
-        fun fromJson(json: JSONObject): Location? {
+        fun fromJson(json: JSONObject?): Location? {
+            if (json == null)
+                return null
+
             val location = Location(
                 addressLine = JsonUtil.getStringOrNull(json, "addressLine"),
                 city = JsonUtil.getStringOrNull(json, "city"),
