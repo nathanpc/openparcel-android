@@ -34,6 +34,7 @@ import com.innoveworkshop.openparcel.model.Carrier
 import com.innoveworkshop.openparcel.model.Parcel
 import com.innoveworkshop.openparcel.model.ParcelStatus
 import com.innoveworkshop.openparcel.model.ParcelUpdate
+import com.innoveworkshop.openparcel.ui.content.ParcelCard
 import com.innoveworkshop.openparcel.ui.theme.AppTheme
 import com.innoveworkshop.openparcel.utils.DateUtil
 import java.net.URI

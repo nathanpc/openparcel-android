@@ -1,4 +1,4 @@
-package com.innoveworkshop.openparcel.ui
+package com.innoveworkshop.openparcel.ui.content
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -16,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,9 +22,16 @@ import com.innoveworkshop.openparcel.model.Carrier
 import com.innoveworkshop.openparcel.model.Parcel
 import com.innoveworkshop.openparcel.model.ParcelStatus
 import com.innoveworkshop.openparcel.model.ParcelUpdate
+import com.innoveworkshop.openparcel.ui.components.SimpleParcelProgress
 import com.innoveworkshop.openparcel.utils.DateUtil
 import java.net.URI
 
+/**
+ * Summary card representation of a parcel.
+ *
+ * @param parcel   The parcel to be displayed.
+ * @param modifier Component modifier attributes.
+ */
 @Composable
 fun ParcelCard(parcel: Parcel, modifier: Modifier = Modifier) {
     val lastParcelUpdate = parcel.trackingHistory[0]
@@ -53,17 +58,14 @@ fun ParcelCard(parcel: Parcel, modifier: Modifier = Modifier) {
                 )
             }
 
-            LinearProgressIndicator(
-                progress = { parcel.progress },
+            SimpleParcelProgress(
+                parcel = parcel,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
                         top = 8.dp,
                         bottom = 16.dp
-                    ),
-                color = Color(parcel.onSurfaceColor()),
-                trackColor = Color(parcel.onSurfaceDividerColor()),
-                strokeCap = StrokeCap.Round
+                    )
             )
 
             Row(
@@ -82,7 +84,7 @@ fun ParcelCard(parcel: Parcel, modifier: Modifier = Modifier) {
                     )
                 }
 
-                Column (
+                Column(
                     modifier = Modifier.alignByBaseline()
                 ) {
                     Text(
@@ -130,7 +132,8 @@ fun ParcelCardManualPreview() {
 @Composable
 fun ParcelCardJsonPreview() {
     ParcelCard(
-        Parcel.fromJson("""
+        Parcel.fromJson(
+            """
             {
               "accentColor": "#FFCC00",
               "cached": true,
