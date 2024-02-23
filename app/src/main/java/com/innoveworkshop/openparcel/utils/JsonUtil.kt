@@ -16,7 +16,7 @@ class JsonUtil {
          * @return A string value associated with the key or null if it's null or doesn't exist.
          */
         fun getStringOrNull(json: JSONObject, key: String): String? {
-            if (json.has(key) or json.isNull(key))
+            if (!json.has(key) or json.isNull(key))
                 return null
 
             return json.getString(key)
@@ -31,7 +31,7 @@ class JsonUtil {
          * @return An object value associated with the key or null if it's null or doesn't exist.
          */
         fun getObjectOrNull(json: JSONObject, key: String): JSONObject? {
-            if (json.has(key) or json.isNull(key))
+            if (!json.has(key) or json.isNull(key))
                 return null
 
             return json.getJSONObject(key)
