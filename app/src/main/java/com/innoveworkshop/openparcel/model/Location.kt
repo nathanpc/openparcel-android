@@ -45,6 +45,43 @@ data class Location(
     }
 
     /**
+     * Progressively tries to find a short location string that represents this object. This is
+     * usually used for small labels that must identify where the parcel is at.
+     *
+     * @param ascendingPriority Prioritize the micro scale before the macro scale locations?
+     *
+     * @return Short location string or null if all fields are null.
+     */
+    fun shortLocation(ascendingPriority: Boolean = true): String? {
+        // Check if the entire location is contained in the address line.
+        if ((addressLine != null) and (city == null) and (state == null) and (country == null))
+            return addressLine
+
+        // Progressively try to find a suitable location string.
+        if (ascendingPriority) {
+            // Micro to macro scale.
+            if (city != null) {
+                return city
+            } else if (state != null) {
+                return state
+            } else if (country != null) {
+                return country
+            }
+        } else {
+            // Macro to micro scale.
+            if (country != null) {
+                return country
+            } else if (state != null) {
+                return state
+            } else if (city != null) {
+                return city
+            }
+        }
+
+        return null
+    }
+
+    /**
      * Checks if the entire object is null and essentially useless.
      *
      * @return True if the object is essentially useless.
