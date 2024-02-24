@@ -87,18 +87,13 @@ fun DetailedParcelProgress(
             modifier = Modifier.fillMaxWidth(1f)
         ) {
             // Left progress bubble cap.
-            Surface(
-                color = color,
-                shape = RoundedCornerShape(50),
+            BubbleIcon(
+                imageVector = ParcelStatus.POSTED.getIcon(),
+                description = ParcelStatus.POSTED.label,
+                iconColor = Color(parcel.onSurfaceColor()),
+                surfaceColor = color,
                 modifier = Modifier.offset(x = 6.dp)
-            ) {
-                Icon(
-                    imageVector = ParcelStatus.POSTED.getIcon(),
-                    contentDescription = ParcelStatus.POSTED.label,
-                    tint = Color(parcel.onSurfaceColor()),
-                    modifier = Modifier.padding(8.dp)
-                )
-            }
+            )
 
             // Actual progress bar.
             SimpleParcelProgress(
@@ -111,18 +106,13 @@ fun DetailedParcelProgress(
             )
 
             // Right progress bubble cap.
-            Surface(
-                color = if (parcel.progress == 1f) color else trackColor,
-                shape = RoundedCornerShape(50),
+            BubbleIcon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.home),
+                description = ParcelStatus.DELIVERED.label,
+                iconColor = Color(parcel.onSurfaceColor()),
+                surfaceColor = if (parcel.progress == 1f) color else trackColor,
                 modifier = Modifier.offset(x = -(6.dp))
-            ) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.home),
-                    contentDescription = ParcelStatus.DELIVERED.label,
-                    tint = Color(parcel.onSurfaceColor()),
-                    modifier = Modifier.padding(8.dp)
-                )
-            }
+            )
         }
 
         // Bottom labels.

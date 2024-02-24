@@ -22,6 +22,7 @@ import com.innoveworkshop.openparcel.model.Carrier
 import com.innoveworkshop.openparcel.model.Parcel
 import com.innoveworkshop.openparcel.model.ParcelStatus
 import com.innoveworkshop.openparcel.model.ParcelUpdate
+import com.innoveworkshop.openparcel.ui.components.ParcelUpdateBubbleIcon
 import com.innoveworkshop.openparcel.ui.components.SimpleParcelProgress
 import com.innoveworkshop.openparcel.utils.DateUtil
 import java.net.URI
@@ -71,18 +72,11 @@ fun ParcelCard(parcel: Parcel, modifier: Modifier = Modifier) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Surface(
-                    modifier = Modifier.padding(end = 8.dp),
-                    color = Color(parcel.onSurfaceDividerColor()),
-                    shape = RoundedCornerShape(50)
-                ) {
-                    Icon(
-                        imageVector = lastParcelUpdate.status.getIcon(),
-                        contentDescription = lastParcelUpdate.status.label,
-                        tint = Color(parcel.onSurfaceColor()),
-                        modifier = Modifier.padding(8.dp)
-                    )
-                }
+                ParcelUpdateBubbleIcon(
+                    parcel = parcel,
+                    update = lastParcelUpdate,
+                    modifier = Modifier.padding(end = 12.dp)
+                )
 
                 Column(
                     modifier = Modifier.alignByBaseline()
