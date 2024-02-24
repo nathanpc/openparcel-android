@@ -1,11 +1,17 @@
 package com.innoveworkshop.openparcel.model
 
+import android.content.Context
+import android.icu.text.DateFormat
+import android.icu.text.DateFormat.HOUR_OF_DAY1_FIELD
+import android.icu.text.DateFormat.MINUTE_FIELD
+import android.icu.text.SimpleDateFormat
 import com.innoveworkshop.openparcel.utils.DateUtil
 import com.innoveworkshop.openparcel.utils.JsonUtil
 import org.json.JSONArray
 import org.json.JSONObject
 import java.time.Instant
 import java.util.Date
+import java.util.Locale
 
 /**
  * Tracking history update item.
@@ -73,5 +79,38 @@ data class ParcelUpdate(
             return array.toArray(arrayOf(ParcelUpdate(title = "",
                 timestamp = Date.from(Instant.now()))))
         }
+    }
+
+    /**
+     * Extracts the hours and minutes from the timestamp and constructs an HH:MM string.
+     *
+     * @param context Current application context.
+     *
+     * @return The usual HH:MM string from the timestamp.
+     */
+    fun getTimeString(context: Context? = null): String {
+        // Get the locale.
+        var locale = Locale.ENGLISH
+        if (context != null)
+            locale = DateUtil.getLocale(context)
+
+        return SimpleDateFormat("HH:mm", locale).format(timestamp)
+    }
+
+    /**
+     * Gets a string that contains the day as a number and the month as text.
+     *
+     *
+     * @param context Current application context.
+     *
+     * @return The usual "dd MMMMM" string from the timestamp.
+     */
+    fun getDayMonthString(context: Context? = null): String {
+        // Get the locale.
+        var locale = Locale.ENGLISH
+        if (context != null)
+            locale = DateUtil.getLocale(context)
+
+        return SimpleDateFormat("dd MMMM", locale).format(timestamp)
     }
 }
