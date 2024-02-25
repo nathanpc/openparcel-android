@@ -33,7 +33,6 @@ import com.innoveworkshop.openparcel.ui.components.SheetActionButtonRow
 import com.innoveworkshop.openparcel.ui.theme.AppTheme
 import com.innoveworkshop.openparcel.utils.DateUtil
 import java.util.Calendar
-import java.util.Date
 
 /**
  * Detailed view of a parcel object.
