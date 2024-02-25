@@ -13,7 +13,8 @@ enum class ParcelStatus(
     val type: String,
     var progress: Float,
     val label: String,
-    var data: JSONObject? = null
+    var data: JSONObject? = null,
+    val importance: Importance = Importance.IMPORTANT
 ) {
     CREATED("created", .1f, "Tracking code created") {
         @Composable
@@ -27,7 +28,10 @@ enum class ParcelStatus(
             return ImageVector.vectorResource(id = R.drawable.local_post_office)
         }
     },
-    IN_TRANSIT("in-transit", .35f, "In transit") {
+    IN_TRANSIT(
+        "in-transit", .35f, "In transit",
+        importance = Importance.REGULAR
+    ) {
         @Composable
         override fun getIcon(): ImageVector {
             return ImageVector.vectorResource(id = R.drawable.local_shipping)
@@ -63,7 +67,10 @@ enum class ParcelStatus(
             return ImageVector.vectorResource(id = R.drawable.package_1)
         }
     },
-    ISSUE("issue", .5f, "Problem occurred") {
+    ISSUE(
+        "issue", .5f, "Problem occurred",
+        importance = Importance.URGENT
+    ) {
         @Composable
         override fun getIcon(): ImageVector {
             return Icons.Rounded.Warning
@@ -126,5 +133,17 @@ enum class ParcelStatus(
 
     override fun toString(): String {
         return this.label
+    }
+
+    /**
+     * Level of importance of an update status.
+     */
+    enum class Importance(
+        val level: Int
+    ) {
+        IGNORED(0),
+        REGULAR(1),
+        IMPORTANT(2),
+        URGENT(3);
     }
 }
