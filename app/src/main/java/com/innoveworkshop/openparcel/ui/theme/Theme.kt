@@ -3,6 +3,7 @@ package com.innoveworkshop.openparcel.ui.theme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -12,16 +13,97 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.core.graphics.ColorUtils
 import androidx.core.view.WindowCompat
+
+/**
+ * Creates a copy of a color while changing only its hue.
+ *
+ * @param hue New color's hue value.
+ *
+ * @return Same color with a different hue.
+ */
+fun Color.copyHue(hue: Float): Color {
+    val oldHsl = FloatArray(3)
+    ColorUtils.colorToHSL(this.toArgb(), oldHsl)
+
+    return Color.hsl(
+        hue = hue,
+        saturation = oldHsl[1],
+        lightness = oldHsl[2],
+        alpha = this.alpha
+    )
+}
+
+/**
+ * Creates a copy of a color scheme while changing the hue of all of the colors in it.
+ *
+ * @param hue New hue value of all the colors in the color scheme.
+ *
+ * @return Same color scheme but with a different global hue.
+ */
+fun ColorScheme.copyHue(hue: Float): ColorScheme = this.copy(
+    primary = primary.copyHue(hue),
+    onPrimary = onPrimary.copyHue(hue),
+    primaryContainer = primaryContainer.copyHue(hue),
+    onPrimaryContainer = onPrimaryContainer.copyHue(hue),
+    secondary = secondary.copyHue(hue),
+    onSecondary = onSecondary.copyHue(hue),
+    secondaryContainer = secondaryContainer.copyHue(hue),
+    onSecondaryContainer = onSecondaryContainer.copyHue(hue),
+    tertiary = tertiary.copyHue(hue),
+    onTertiary = onTertiary.copyHue(hue),
+    tertiaryContainer = tertiaryContainer.copyHue(hue),
+    onTertiaryContainer = onTertiaryContainer.copyHue(hue),
+    error = error.copyHue(hue),
+    onError = onError.copyHue(hue),
+    errorContainer = errorContainer.copyHue(hue),
+    onErrorContainer = onErrorContainer.copyHue(hue),
+    background = background.copyHue(hue),
+    onBackground = onBackground.copyHue(hue),
+    surface = surface.copyHue(hue),
+    onSurface = onSurface.copyHue(hue),
+    surfaceVariant = surfaceVariant.copyHue(hue),
+    onSurfaceVariant = onSurfaceVariant.copyHue(hue),
+    outline = outline.copyHue(hue),
+    outlineVariant = outlineVariant.copyHue(hue),
+    scrim = scrim.copyHue(hue),
+    inverseSurface = inverseSurface.copyHue(hue),
+    inverseOnSurface = inverseOnSurface.copyHue(hue),
+    inversePrimary = inversePrimary.copyHue(hue),
+    surfaceDim = surfaceDim.copyHue(hue),
+    surfaceBright = surfaceBright.copyHue(hue),
+    surfaceContainerLowest = surfaceContainerLowest.copyHue(hue),
+    surfaceContainerLow = surfaceContainerLow.copyHue(hue),
+    surfaceContainer = surfaceContainer.copyHue(hue),
+    surfaceContainerHigh = surfaceContainerHigh.copyHue(hue),
+    surfaceContainerHighest = surfaceContainerHighest.copyHue(hue),
+)
 
 @Immutable
 data class ExtendedColorScheme(
     val blue: ColorFamily,
-    val green: ColorFamily,
-)
+    val green: ColorFamily
+) {
+    /**
+     * Gets the extended color scheme by its name.
+     *
+     * @param name Name of the extended color scheme.
+     *
+     * @return Extended color scheme family.
+     *
+     * @throws NoSuchElementException if the name does not correspond to any color scheme.
+     */
+    fun getScheme(name: String): ColorFamily = when (name) {
+        "blue" -> blue
+        "green" -> green
+        else -> throw NoSuchElementException("Extended color $name does not currently exist")
+    }
+}
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -353,22 +435,39 @@ val unspecified_scheme = ColorFamily(
     Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
 )
 
+/**
+ * Gets the base color scheme given the current environment.
+ *
+ * @param darkTheme    Should we use a dark theme?
+ * @param dynamicColor Should we use the Material You dynamic color thing?
+ *
+ * @return Application color scheme appropriate for the current environment.
+ */
 @Composable
-fun AppTheme(
+fun getBaseColorScheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = false,
-    content: @Composable() () -> Unit
-) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> darkScheme
-        else -> lightScheme
+    dynamicColor: Boolean = false
+): ColorScheme = when {
+    dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        val context = LocalContext.current
+        if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
     }
+
+    darkTheme -> darkScheme
+    else -> lightScheme
+}
+
+/**
+ * Fixes some problems related to theming in the developer tools.
+ *
+ * @param colorScheme Current color scheme of the application.
+ * @param darkTheme   Should we use a dark theme?
+ */
+@Composable
+fun DeveloperModeFix(
+    colorScheme: ColorScheme,
+    darkTheme: Boolean
+) {
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
@@ -377,6 +476,76 @@ fun AppTheme(
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
+}
+
+@Composable
+fun AppTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    dynamicColor: Boolean = false,
+    content: @Composable () -> Unit
+) {
+    val colorScheme = getBaseColorScheme(darkTheme, dynamicColor)
+    DeveloperModeFix(colorScheme, darkTheme)
+
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = Typography,
+        content = content
+    )
+}
+
+@Composable
+fun ExtendedTheme(
+    colorName: String,
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    dynamicColor: Boolean = false,
+    content: @Composable () -> Unit
+) {
+    // Substitute with extended colors.
+    val colorScheme = when {
+        darkTheme -> getBaseColorScheme(true, dynamicColor).copy(
+            primary = extendedDark.getScheme(colorName).color,
+            onPrimary = extendedDark.getScheme(colorName).onColor,
+            primaryContainer = extendedDark.getScheme(colorName).colorContainer,
+            onPrimaryContainer = extendedDark.getScheme(colorName).onColorContainer,
+            surfaceVariant = extendedDark.getScheme(colorName).colorContainer,
+            onSurfaceVariant = extendedLight.getScheme(colorName).onColorContainer
+        )
+
+        else -> getBaseColorScheme(false, dynamicColor).copy(
+            primary = extendedLight.getScheme(colorName).color,
+            onPrimary = extendedLight.getScheme(colorName).onColor,
+            primaryContainer = extendedLight.getScheme(colorName).colorContainer,
+            onPrimaryContainer = extendedLight.getScheme(colorName).onColorContainer,
+            surfaceVariant = extendedLight.getScheme(colorName).colorContainer,
+            onSurfaceVariant = extendedLight.getScheme(colorName).onColorContainer
+        )
+    }
+
+    // Fix development tools.
+    DeveloperModeFix(colorScheme, darkTheme)
+
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = Typography,
+        content = content
+    )
+}
+
+@Composable
+fun HueBasedTheme(
+    hue: Float,
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    // Substitute with extended colors.
+    val colorScheme = when {
+        darkTheme -> darkScheme.copyHue(hue)
+        else -> lightScheme.copyHue(hue)
+    }
+
+    // Fix development tools.
+    DeveloperModeFix(colorScheme, darkTheme)
 
     MaterialTheme(
         colorScheme = colorScheme,
