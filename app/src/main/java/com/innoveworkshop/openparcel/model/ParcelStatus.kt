@@ -6,6 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import com.innoveworkshop.openparcel.R
+import com.innoveworkshop.openparcel.ui.theme.AppTheme
+import com.innoveworkshop.openparcel.ui.theme.ExtendedTheme
+import com.innoveworkshop.openparcel.ui.theme.HueBasedTheme
 import com.innoveworkshop.openparcel.utils.JsonUtil
 import org.json.JSONObject
 
@@ -18,63 +21,83 @@ enum class ParcelStatus(
 ) {
     CREATED("created", .1f, "Tracking code created") {
         @Composable
-        override fun getIcon(): ImageVector {
-            return ImageVector.vectorResource(id = R.drawable.deployed_code_update)
-        }
+        override fun getIcon(): ImageVector =
+            ImageVector.vectorResource(id = R.drawable.deployed_code_update)
+
+        @Composable
+        override fun CardTheme(content: @Composable() () -> Unit): Unit =
+            HueBasedTheme(hue = 50f, content = content)
     },
     POSTED("posted", .2f, "Item posted") {
         @Composable
-        override fun getIcon(): ImageVector {
-            return ImageVector.vectorResource(id = R.drawable.local_post_office)
-        }
+        override fun getIcon(): ImageVector =
+            ImageVector.vectorResource(id = R.drawable.local_post_office)
+
+        @Composable
+        override fun CardTheme(content: @Composable() () -> Unit): Unit =
+            HueBasedTheme(hue = 50f, content = content)
     },
     IN_TRANSIT(
         "in-transit", .35f, "In transit",
         importance = Importance.REGULAR
     ) {
         @Composable
-        override fun getIcon(): ImageVector {
-            return ImageVector.vectorResource(id = R.drawable.local_shipping)
-        }
+        override fun getIcon(): ImageVector =
+            ImageVector.vectorResource(id = R.drawable.local_shipping)
     },
     CUSTOMS_CLEARED("customs-cleared", .5f, "Cleared customs") {
         @Composable
-        override fun getIcon(): ImageVector {
-            return ImageVector.vectorResource(id = R.drawable.local_police)
-        }
+        override fun getIcon(): ImageVector =
+            ImageVector.vectorResource(id = R.drawable.local_police)
+
+        @Composable
+        override fun CardTheme(content: @Composable() () -> Unit): Unit =
+            HueBasedTheme(hue = 220f, content = content)
     },
     DELIVERY_ATTEMPT("delivery-attempt", .8f, "Attempted delivery") {
         @Composable
-        override fun getIcon(): ImageVector {
-            return ImageVector.vectorResource(id = R.drawable.deployed_code_alert)
-        }
+        override fun getIcon(): ImageVector =
+            ImageVector.vectorResource(id = R.drawable.deployed_code_alert)
+
+        @Composable
+        override fun CardTheme(content: @Composable() () -> Unit): Unit =
+            HueBasedTheme(hue = 0f, content = content)
     },
     WAITING_PICKUP("pickup", .9f, "Waiting for pickup") {
         @Composable
-        override fun getIcon(): ImageVector {
-            return ImageVector.vectorResource(id = R.drawable.pallet)
-        }
+        override fun getIcon(): ImageVector = ImageVector.vectorResource(id = R.drawable.pallet)
+
+        @Composable
+        override fun CardTheme(content: @Composable() () -> Unit): Unit =
+            HueBasedTheme(hue = 185f, content = content)
     },
     DELIVERING("delivering", .9f, "Delivery in progress") {
         @Composable
-        override fun getIcon(): ImageVector {
-            return ImageVector.vectorResource(id = R.drawable.deployed_code_account)
-        }
+        override fun getIcon(): ImageVector =
+            ImageVector.vectorResource(id = R.drawable.deployed_code_account)
+
+        @Composable
+        override fun CardTheme(content: @Composable() () -> Unit): Unit =
+            HueBasedTheme(hue = 65f, content = content)
     },
     DELIVERED("delivered", 1f, "Delivered") {
         @Composable
-        override fun getIcon(): ImageVector {
-            return ImageVector.vectorResource(id = R.drawable.package_1)
-        }
+        override fun getIcon(): ImageVector = ImageVector.vectorResource(id = R.drawable.package_1)
+
+        @Composable
+        override fun CardTheme(content: @Composable() () -> Unit): Unit =
+            HueBasedTheme(hue = 110f, content = content)
     },
     ISSUE(
         "issue", .5f, "Problem occurred",
         importance = Importance.URGENT
     ) {
         @Composable
-        override fun getIcon(): ImageVector {
-            return Icons.Rounded.Warning
-        }
+        override fun getIcon(): ImageVector = Icons.Rounded.Warning
+
+        @Composable
+        override fun CardTheme(content: @Composable() () -> Unit): Unit =
+            HueBasedTheme(hue = 335f, content = content)
     };
 
     companion object {
@@ -118,6 +141,14 @@ enum class ParcelStatus(
      */
     @Composable
     abstract fun getIcon(): ImageVector
+
+    /**
+     * Gets the Card colors associated with this parcel status.
+     *
+     * @return Card color for this parcel status.
+     */
+    @Composable
+    open fun CardTheme(content: @Composable() () -> Unit): Unit = AppTheme(content = content)
 
     /**
      * Gets a parcel status with a specific progress value set.
