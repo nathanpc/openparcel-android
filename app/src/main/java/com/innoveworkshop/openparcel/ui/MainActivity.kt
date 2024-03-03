@@ -130,7 +130,7 @@ fun MainView(parcels: List<Parcel>) {
 
 @Preview(showBackground = true)
 @Composable
-fun MainViewPreview() {
+private fun MainViewPreview() {
     AppTheme {
         MainView(parcelExamples)
     }

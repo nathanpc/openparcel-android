@@ -100,7 +100,7 @@ fun SheetActionButtonRow(
 
 @Preview(showBackground = true)
 @Composable
-fun SingleSheetActionButtonPreview() {
+private fun SingleSheetActionButtonPreview() {
     SheetActionButton(
         text = "Edit",
         icon = Icons.Rounded.Edit,
@@ -110,7 +110,7 @@ fun SingleSheetActionButtonPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun SingleLongSheetActionButtonPreview() {
+private fun SingleLongSheetActionButtonPreview() {
     SheetActionButton(
         text = "Move to archive",
         icon = Icons.AutoMirrored.Rounded.ExitToApp,
@@ -122,7 +122,7 @@ fun SingleLongSheetActionButtonPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, heightDp = 300)
 @Composable
-fun SheetActionButtonPreview() {
+private fun SheetActionButtonPreview() {
     ModalBottomSheet(
         onDismissRequest = { },
         sheetState = SheetState(

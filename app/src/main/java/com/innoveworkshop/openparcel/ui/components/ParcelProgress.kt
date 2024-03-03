@@ -54,7 +54,7 @@ fun SimpleParcelProgress(
 
 @Preview(showBackground = true)
 @Composable
-fun SimpleParcelProgressPreview() {
+private fun SimpleParcelProgressPreview() {
     SimpleParcelProgress(sampleParcel())
 }
 
@@ -142,7 +142,7 @@ fun DetailedParcelProgress(
 
 @Preview(showBackground = true)
 @Composable
-fun DetailedParcelProgressPreview() {
+private fun DetailedParcelProgressPreview() {
     Column(
         modifier = Modifier.fillMaxWidth(1f)
     ) {

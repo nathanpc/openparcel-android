@@ -201,7 +201,7 @@ fun TimelineDateHeader(
 
 @Preview(showBackground = true)
 @Composable
-fun ParcelDetailPreview() {
+private fun ParcelDetailPreview() {
     AppTheme {
         ParcelDetail(parcelExamples[0])
     }

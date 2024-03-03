@@ -127,7 +127,7 @@ fun ParcelHistoryCard(
 
 @Preview(showBackground = true)
 @Composable
-fun ParcelHistoryCardPreview() {
+private fun ParcelHistoryCardPreview() {
     AppTheme {
         LazyColumn {
             items(parcelExamples[0].trackingHistory) { update ->
@@ -139,7 +139,7 @@ fun ParcelHistoryCardPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun ParcelHistoryCardColorsPreview() {
+private fun ParcelHistoryCardColorsPreview() {
     AppTheme {
         Column {
             ParcelHistoryCard(

@@ -101,7 +101,7 @@ fun ParcelCard(
 
 @Preview(showBackground = true)
 @Composable
-fun ParcelCardPreview() {
+private fun ParcelCardPreview() {
     AppTheme {
         LazyColumn {
             items(parcelExamples) { ParcelCard(it) }

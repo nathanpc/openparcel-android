@@ -72,7 +72,7 @@ fun ParcelUpdateBubbleIcon(
 
 @Preview(showBackground = true)
 @Composable
-fun BubbleIconPreview() {
+private fun BubbleIconPreview() {
     Column {
         BubbleIcon(
             imageVector = ImageVector.vectorResource(R.drawable.local_shipping),
