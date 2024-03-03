@@ -213,15 +213,15 @@ private fun getLocationStrings(parcel: Parcel): Array<String> {
 private fun sampleParcel(status: ParcelStatus = ParcelStatus.POSTED): Parcel {
     return Parcel(
         id = 0,
-        name = "Panasonic Lumix DMC-GF1",
+        name = "",
         delivered = false,
         carrier = Carrier(
-            id = "dhl",
-            name = "DHL"
+            id = "example",
+            name = "Example"
         ),
         color = Color(0xFFFFCC00).toArgb(),
-        trackingCode = "CA767344619DE",
-        trackingUrl = URI.create("https://www.dhl.com/pt-pt/home/tracking.html?tracking-id=CA767344619DE&submit=1"),
+        trackingCode = "EXAMPLE",
+        trackingUrl = URI.create("localhost"),
         trackingHistory = arrayOf(
             ParcelUpdate(
                 title = "Order data transmitted electronically",

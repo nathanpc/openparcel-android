@@ -3,6 +3,7 @@ package com.innoveworkshop.openparcel.model
 import android.content.Context
 import android.icu.text.SimpleDateFormat
 import com.innoveworkshop.openparcel.utils.DateUtil
+import com.innoveworkshop.openparcel.utils.JsonUtil.Companion.getObjectOrNull
 import com.innoveworkshop.openparcel.utils.JsonUtil.Companion.getStringOrNull
 import org.json.JSONArray
 import org.json.JSONObject
@@ -33,7 +34,7 @@ data class ParcelUpdate(
             title = json.getString("title"),
             description = json.getStringOrNull("description"),
             timestamp = DateUtil.fromISO8601(json.getString("timestamp")),
-            location = Location.fromJson(json.getJSONObject("location")),
+            location = Location.fromJson(json.getObjectOrNull("location")),
             status = if (json.isNull("status"))
                 ParcelStatus.IN_TRANSIT.withProgress(lastProgressValue) else
                 ParcelStatus.fromJson(json.getJSONObject("status"))
