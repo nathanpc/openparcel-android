@@ -26,13 +26,24 @@ class DateUtil {
         /**
          * Gets a human-readable representation of a relative timeframe.
          *
-         * @param date      The timestamp to compare with the reference.
          * @param reference The reference used for the relative comparison. Defaults to now.
          *
          * @return A human-readable representation of a relative timeframe.
          */
-        fun getRelativeTimeString(date: Date, reference: Date = Date.from(Clock.System.now().toJavaInstant())): String =
-            DateUtils.getRelativeTimeSpanString(date.time, reference.time, 0).toString()
+        fun Date.getRelativeTimeString(reference: Date): String =
+            DateUtils.getRelativeTimeSpanString(this.time, reference.time, 0).toString()
+
+        /**
+         * Gets a human-readable representation of a relative timeframe from now.
+         *
+         * @return A human-readable representation of a relative timeframe from now.
+         */
+        val Date.relativeTimeString: String get() = DateUtils.getRelativeTimeSpanString(
+            this.time,
+            Date.from(Clock.System.now().toJavaInstant()).time,
+            0
+        ).toString()
+
 
         /**
          * Gets the current default locale set by the user.
@@ -41,23 +52,22 @@ class DateUtil {
          *
          * @return The current default locale set by the user.
          */
-        fun getLocale(context: Context): Locale = context.resources.configuration.locales[0]
+        fun getCurrentLocale(context: Context): Locale = context.resources.configuration.locales[0]
 
         /**
          * Checks if a date is different from another.
          *
-         * @param calendar Calendar object to compare with.
-         * @param date     Date object to compare with.
+         * @param date Date object to compare with.
          *
          * @return True if the day, month, or year are different between the two objects.
          */
-        fun isDateDifferent(calendar: Calendar, date: Date): Boolean {
+        fun Calendar.isDifferent(date: Date): Boolean {
             val other: Calendar = Calendar.getInstance()
             other.time = date
 
-            return (calendar.get(Calendar.DAY_OF_MONTH) != other.get(Calendar.DAY_OF_MONTH)) or
-                    (calendar.get(Calendar.MONTH) != other.get(Calendar.MONTH)) or
-                    (calendar.get(Calendar.YEAR) != other.get(Calendar.YEAR))
+            return (this.get(Calendar.DAY_OF_MONTH) != other.get(Calendar.DAY_OF_MONTH)) or
+                    (this.get(Calendar.MONTH) != other.get(Calendar.MONTH)) or
+                    (this.get(Calendar.YEAR) != other.get(Calendar.YEAR))
         }
     }
 }

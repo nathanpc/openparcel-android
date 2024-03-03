@@ -22,6 +22,7 @@ import com.innoveworkshop.openparcel.model.ParcelUpdate
 import com.innoveworkshop.openparcel.ui.components.ParcelUpdateBubbleIcon
 import com.innoveworkshop.openparcel.ui.components.SimpleParcelProgress
 import com.innoveworkshop.openparcel.utils.DateUtil
+import com.innoveworkshop.openparcel.utils.DateUtil.Companion.relativeTimeString
 import java.net.URI
 
 /**
@@ -91,7 +92,7 @@ fun ParcelCard(
                         style = MaterialTheme.typography.bodyLarge
                     )
                     Text(
-                        text = DateUtil.getRelativeTimeString(lastParcelUpdate.timestamp),
+                        text = lastParcelUpdate.timestamp.relativeTimeString,
                         style = MaterialTheme.typography.bodySmall
                     )
                 }

@@ -1,6 +1,6 @@
 package com.innoveworkshop.openparcel.model
 
-import com.innoveworkshop.openparcel.utils.JsonUtil
+import com.innoveworkshop.openparcel.utils.JsonUtil.Companion.getStringOrNull
 import org.json.JSONObject
 
 /**
@@ -28,12 +28,12 @@ data class Location(
                 return null
 
             val location = Location(
-                addressLine = JsonUtil.getStringOrNull(json, "addressLine"),
-                city = JsonUtil.getStringOrNull(json, "city"),
-                state = JsonUtil.getStringOrNull(json, "state"),
-                postalCode = JsonUtil.getStringOrNull(json, "postalCode"),
-                country = JsonUtil.getStringOrNull(json, "country"),
-                searchQuery = JsonUtil.getStringOrNull(json, "searchQuery"),
+                addressLine = json.getStringOrNull("addressLine"),
+                city = json.getStringOrNull("city"),
+                state = json.getStringOrNull("state"),
+                postalCode = json.getStringOrNull("postalCode"),
+                country = json.getStringOrNull("country"),
+                searchQuery = json.getStringOrNull("searchQuery"),
                 coords = GeoCoords.fromJson(json.getJSONObject("coords"))
             )
 

@@ -8,33 +8,31 @@ import org.json.JSONObject
 class JsonUtil {
     companion object {
         /**
-         * Gets a string value from a JSON object or null if it's null or doesn't exist.
+         * Gets the string value from the object or null if it's null or doesn't exist.
          *
-         * @param json JSON object to get the value from.
          * @param key  Key to the value in the object.
          *
-         * @return A string value associated with the key or null if it's null or doesn't exist.
+         * @return String value associated with the key or null if it's null or doesn't exist.
          */
-        fun getStringOrNull(json: JSONObject, key: String): String? {
-            if (!json.has(key) or json.isNull(key))
+        fun JSONObject.getStringOrNull(key: String): String? {
+            if (!this.has(key) or this.isNull(key))
                 return null
 
-            return json.getString(key)
+            return this.getString(key)
         }
 
         /**
-         * Gets an object value from a JSON object or null if it's null or doesn't exist.
+         * Gets the object value from the parent object or null if it's null or doesn't exist.
          *
-         * @param json JSON object to get the value from.
          * @param key  Key to the value in the object.
          *
-         * @return An object value associated with the key or null if it's null or doesn't exist.
+         * @return Object value associated with the key or null if it's null or doesn't exist.
          */
-        fun getObjectOrNull(json: JSONObject, key: String): JSONObject? {
-            if (!json.has(key) or json.isNull(key))
+        fun JSONObject.getObjectOrNull(key: String): JSONObject? {
+            if (!this.has(key) or this.isNull(key))
                 return null
 
-            return json.getJSONObject(key)
+            return this.getJSONObject(key)
         }
     }
 }

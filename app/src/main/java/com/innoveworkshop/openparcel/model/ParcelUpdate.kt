@@ -1,12 +1,9 @@
 package com.innoveworkshop.openparcel.model
 
 import android.content.Context
-import android.icu.text.DateFormat
-import android.icu.text.DateFormat.HOUR_OF_DAY1_FIELD
-import android.icu.text.DateFormat.MINUTE_FIELD
 import android.icu.text.SimpleDateFormat
 import com.innoveworkshop.openparcel.utils.DateUtil
-import com.innoveworkshop.openparcel.utils.JsonUtil
+import com.innoveworkshop.openparcel.utils.JsonUtil.Companion.getStringOrNull
 import org.json.JSONArray
 import org.json.JSONObject
 import java.time.Instant
@@ -34,7 +31,7 @@ data class ParcelUpdate(
          */
         fun fromJson(json: JSONObject, lastProgressValue: Float = 0f): ParcelUpdate = ParcelUpdate(
             title = json.getString("title"),
-            description = JsonUtil.getStringOrNull(json, "description"),
+            description = json.getStringOrNull("description"),
             timestamp = DateUtil.fromISO8601(json.getString("timestamp")),
             location = Location.fromJson(json.getJSONObject("location")),
             status = if (json.isNull("status"))
@@ -51,7 +48,7 @@ data class ParcelUpdate(
          */
         fun fromJsonList(jsonArray: JSONArray): Array<ParcelUpdate> {
             val array = ArrayList<ParcelUpdate>()
-            var lastProgressValue: Float = .7f
+            var lastProgressValue = .7f
 
             for (index in 0 until jsonArray.length()) {
                 // Set the last progress value for the In Transit status.
@@ -92,7 +89,7 @@ data class ParcelUpdate(
         // Get the locale.
         var locale = Locale.ENGLISH
         if (context != null)
-            locale = DateUtil.getLocale(context)
+            locale = DateUtil.getCurrentLocale(context)
 
         return SimpleDateFormat("HH:mm", locale).format(timestamp)
     }
@@ -109,7 +106,7 @@ data class ParcelUpdate(
         // Get the locale.
         var locale = Locale.ENGLISH
         if (context != null)
-            locale = DateUtil.getLocale(context)
+            locale = DateUtil.getCurrentLocale(context)
 
         return SimpleDateFormat("dd MMMM", locale).format(timestamp)
     }

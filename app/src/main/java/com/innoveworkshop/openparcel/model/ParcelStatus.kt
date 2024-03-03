@@ -7,9 +7,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import com.innoveworkshop.openparcel.R
 import com.innoveworkshop.openparcel.ui.theme.AppTheme
-import com.innoveworkshop.openparcel.ui.theme.ExtendedTheme
 import com.innoveworkshop.openparcel.ui.theme.HueBasedTheme
-import com.innoveworkshop.openparcel.utils.JsonUtil
+import com.innoveworkshop.openparcel.utils.JsonUtil.Companion.getObjectOrNull
 import org.json.JSONObject
 
 enum class ParcelStatus(
@@ -25,7 +24,7 @@ enum class ParcelStatus(
             ImageVector.vectorResource(id = R.drawable.deployed_code_update)
 
         @Composable
-        override fun CardTheme(content: @Composable() () -> Unit): Unit =
+        override fun CardTheme(content: @Composable () -> Unit): Unit =
             HueBasedTheme(hue = 50f, content = content)
     },
     POSTED("posted", .2f, "Item posted") {
@@ -34,7 +33,7 @@ enum class ParcelStatus(
             ImageVector.vectorResource(id = R.drawable.local_post_office)
 
         @Composable
-        override fun CardTheme(content: @Composable() () -> Unit): Unit =
+        override fun CardTheme(content: @Composable () -> Unit): Unit =
             HueBasedTheme(hue = 50f, content = content)
     },
     IN_TRANSIT(
@@ -51,7 +50,7 @@ enum class ParcelStatus(
             ImageVector.vectorResource(id = R.drawable.local_police)
 
         @Composable
-        override fun CardTheme(content: @Composable() () -> Unit): Unit =
+        override fun CardTheme(content: @Composable () -> Unit): Unit =
             HueBasedTheme(hue = 220f, content = content)
     },
     DELIVERY_ATTEMPT("delivery-attempt", .8f, "Attempted delivery") {
@@ -60,7 +59,7 @@ enum class ParcelStatus(
             ImageVector.vectorResource(id = R.drawable.deployed_code_alert)
 
         @Composable
-        override fun CardTheme(content: @Composable() () -> Unit): Unit =
+        override fun CardTheme(content: @Composable () -> Unit): Unit =
             HueBasedTheme(hue = 0f, content = content)
     },
     WAITING_PICKUP("pickup", .9f, "Waiting for pickup") {
@@ -68,7 +67,7 @@ enum class ParcelStatus(
         override fun getIcon(): ImageVector = ImageVector.vectorResource(id = R.drawable.pallet)
 
         @Composable
-        override fun CardTheme(content: @Composable() () -> Unit): Unit =
+        override fun CardTheme(content: @Composable () -> Unit): Unit =
             HueBasedTheme(hue = 185f, content = content)
     },
     DELIVERING("delivering", .9f, "Delivery in progress") {
@@ -77,7 +76,7 @@ enum class ParcelStatus(
             ImageVector.vectorResource(id = R.drawable.deployed_code_account)
 
         @Composable
-        override fun CardTheme(content: @Composable() () -> Unit): Unit =
+        override fun CardTheme(content: @Composable () -> Unit): Unit =
             HueBasedTheme(hue = 65f, content = content)
     },
     DELIVERED("delivered", 1f, "Delivered") {
@@ -85,7 +84,7 @@ enum class ParcelStatus(
         override fun getIcon(): ImageVector = ImageVector.vectorResource(id = R.drawable.package_1)
 
         @Composable
-        override fun CardTheme(content: @Composable() () -> Unit): Unit =
+        override fun CardTheme(content: @Composable () -> Unit): Unit =
             HueBasedTheme(hue = 110f, content = content)
     },
     ISSUE(
@@ -96,7 +95,7 @@ enum class ParcelStatus(
         override fun getIcon(): ImageVector = Icons.Rounded.Warning
 
         @Composable
-        override fun CardTheme(content: @Composable() () -> Unit): Unit =
+        override fun CardTheme(content: @Composable () -> Unit): Unit =
             HueBasedTheme(hue = 335f, content = content)
     };
 
@@ -110,7 +109,7 @@ enum class ParcelStatus(
          */
         fun fromJson(json: JSONObject): ParcelStatus = fromType(
             type = json.getString("type"),
-            data = JsonUtil.getObjectOrNull(json, "data")
+            data = json.getObjectOrNull("data")
         )
 
         /**
@@ -148,7 +147,7 @@ enum class ParcelStatus(
      * @return Card color for this parcel status.
      */
     @Composable
-    open fun CardTheme(content: @Composable() () -> Unit): Unit = AppTheme(content = content)
+    open fun CardTheme(content: @Composable () -> Unit): Unit = AppTheme(content = content)
 
     /**
      * Gets a parcel status with a specific progress value set.

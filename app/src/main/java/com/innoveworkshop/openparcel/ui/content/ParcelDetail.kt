@@ -31,7 +31,8 @@ import com.innoveworkshop.openparcel.ui.components.ParcelHistoryCard
 import com.innoveworkshop.openparcel.ui.components.SheetActionButton
 import com.innoveworkshop.openparcel.ui.components.SheetActionButtonRow
 import com.innoveworkshop.openparcel.ui.theme.AppTheme
-import com.innoveworkshop.openparcel.utils.DateUtil
+import com.innoveworkshop.openparcel.utils.DateUtil.Companion.isDifferent
+import com.innoveworkshop.openparcel.utils.DateUtil.Companion.relativeTimeString
 import java.util.Calendar
 
 /**
@@ -98,7 +99,7 @@ fun ParcelDetail(parcel: Parcel, modifier: Modifier = Modifier) {
 
             // Last updated label.
             Text(
-                text = "Updated " + DateUtil.getRelativeTimeString(parcel.lastUpdated),
+                text = "Updated " + parcel.lastUpdated.relativeTimeString,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.secondary,
                 textAlign = TextAlign.Center,
@@ -162,7 +163,7 @@ fun ParcelDetail(parcel: Parcel, modifier: Modifier = Modifier) {
             // Build up the list.
             items(parcel.trackingHistory) { update ->
                 // Decide if a new date header is needed.
-                if (DateUtil.isDateDifferent(calendar, update.timestamp)) {
+                if (calendar.isDifferent(update.timestamp)) {
                     TimelineDateHeader(
                         update = update,
                         modifier = Modifier.padding(top = headerPadding)
