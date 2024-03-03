@@ -2,8 +2,9 @@ package com.innoveworkshop.openparcel.utils
 
 import android.content.Context
 import android.text.format.DateUtils
-import java.time.Instant
-import java.time.format.DateTimeFormatter
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.toJavaInstant
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -20,8 +21,7 @@ class DateUtil {
          *
          * @return Date object.
          */
-        fun fromISO8601(dateStr: String): Date =
-            Date.from(Instant.from(DateTimeFormatter.ISO_INSTANT.parse(dateStr)))
+        fun fromISO8601(dateStr: String): Date = Date.from(Instant.parse(dateStr).toJavaInstant())
 
         /**
          * Gets a human-readable representation of a relative timeframe.
@@ -31,7 +31,7 @@ class DateUtil {
          *
          * @return A human-readable representation of a relative timeframe.
          */
-        fun getRelativeTimeString(date: Date, reference: Date = Date.from(Instant.now())): String =
+        fun getRelativeTimeString(date: Date, reference: Date = Date.from(Clock.System.now().toJavaInstant())): String =
             DateUtils.getRelativeTimeSpanString(date.time, reference.time, 0).toString()
 
         /**
