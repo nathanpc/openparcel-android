@@ -21,6 +21,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -35,6 +39,7 @@ import com.innoveworkshop.openparcel.model.Parcel
 import com.innoveworkshop.openparcel.model.ParcelStatus
 import com.innoveworkshop.openparcel.model.ParcelUpdate
 import com.innoveworkshop.openparcel.ui.content.ParcelCard
+import com.innoveworkshop.openparcel.ui.content.ParcelDetailSheet
 import com.innoveworkshop.openparcel.ui.theme.AppTheme
 import com.innoveworkshop.openparcel.utils.DateUtil
 import java.net.URI
@@ -49,7 +54,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainView(parcels = listOf())
+                    MainViewPreview()
                 }
             }
         }
@@ -60,6 +65,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainView(parcels: List<Parcel>) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    var showBottomSheet by remember { mutableStateOf(false) }
+    var selectedParcel: Parcel? = null
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -101,14 +108,31 @@ fun MainView(parcels: List<Parcel>) {
         LazyColumn(
             modifier = Modifier.padding(innerPadding)
         ) {
+            // Parcel cards list.
             items(parcels) { parcel ->
-                ParcelCard(parcel = parcel)
+                ParcelCard(
+                    parcel = parcel,
+                    onClick = {
+                        // Opens up the parcel detail bottom sheet.
+                        selectedParcel = parcel
+                        showBottomSheet = true
+                    }
+                )
             }
         }
+
+        // Bottom sheet with parcel details.
+        ParcelDetailSheet(
+            parcel = selectedParcel,
+            isVisible = showBottomSheet,
+            onDismissRequest = {
+                showBottomSheet = false
+            }
+        )
     }
 }
 
-@Preview(showBackground = true, apiLevel = 33)
+@Preview(showBackground = true)
 @Composable
 fun MainViewPreview() {
     AppTheme {
@@ -134,24 +158,199 @@ fun MainViewPreview() {
                     ),
                     lastUpdated = DateUtil.fromISO8601("2024-02-19T07:29:00.000Z")
                 ),
-                Parcel(
-                    id = 0,
-                    name = "Panasonic Lumix DMC-GF1",
-                    delivered = false,
-                    carrier = Carrier(
-                        id = "dhl",
-                        name = "DHL"
-                    ),
-                    color = Color(0xFFFFCC00).toArgb(),
-                    trackingCode = "CA767344619DE",
-                    trackingUrl = URI.create("https://www.dhl.com/pt-pt/home/tracking.html?tracking-id=CA767344619DE&submit=1"),
-                    trackingHistory = arrayOf(
-                        ParcelUpdate(
-                            title = "Entered the distribution center for international export",
-                            timestamp = DateUtil.fromISO8601("2024-02-19T07:29:00.000Z")
-                        )
-                    ),
-                    lastUpdated = DateUtil.fromISO8601("2024-02-19T07:29:00.000Z")
+                Parcel.fromJson(
+                    """
+            {
+              "accentColor": "#FFCC00",
+              "cached": true,
+              "carrier": {
+                "id": "dhl",
+                "name": "DHL"
+              },
+              "creationDate": null,
+              "destination": {
+                "addressLine": null,
+                "city": null,
+                "coords": {
+                  "lat": null,
+                  "lng": null
+                },
+                "country": "Portugal",
+                "postalCode": null,
+                "searchQuery": "Portugal",
+                "state": null
+              },
+              "history": [
+                {
+                  "description": null,
+                  "location": {
+                    "addressLine": null,
+                    "city": null,
+                    "coords": {
+                      "lat": null,
+                      "lng": null
+                    },
+                    "country": "Portugal",
+                    "postalCode": null,
+                    "searchQuery": "Portugal",
+                    "state": null
+                  },
+                  "status": {
+                    "data": {
+                      "description": "Delivery successful",
+                      "to": null
+                    },
+                    "type": "delivered"
+                  },
+                  "timestamp": "2024-02-19T11:02:00.000Z",
+                  "title": "Delivery successful"
+                },
+                {
+                  "description": null,
+                  "location": {
+                    "addressLine": null,
+                    "city": null,
+                    "coords": {
+                      "lat": null,
+                      "lng": null
+                    },
+                    "country": "Portugal",
+                    "postalCode": null,
+                    "searchQuery": "Portugal",
+                    "state": null
+                  },
+                  "status": {
+                    "data": {
+                      "description": "Being delivered"
+                    },
+                    "type": "delivering"
+                  },
+                  "timestamp": "2024-02-19T08:41:00.000Z",
+                  "title": "Being delivered"
+                },
+                {
+                  "description": null,
+                  "location": {
+                    "addressLine": null,
+                    "city": null,
+                    "coords": {
+                      "lat": null,
+                      "lng": null
+                    },
+                    "country": "Portugal",
+                    "postalCode": null,
+                    "searchQuery": "Portugal",
+                    "state": null
+                  },
+                  "status": null,
+                  "timestamp": "2024-02-19T07:29:00.000Z",
+                  "title": "Shipment processed at delivery depot"
+                },
+                {
+                  "description": null,
+                  "location": {
+                    "addressLine": null,
+                    "city": null,
+                    "coords": {
+                      "lat": null,
+                      "lng": null
+                    },
+                    "country": "Portugal",
+                    "postalCode": null,
+                    "searchQuery": "Portugal",
+                    "state": null
+                  },
+                  "status": null,
+                  "timestamp": "2024-02-19T04:13:00.000Z",
+                  "title": "Arrival in the destination country/destination area"
+                },
+                {
+                  "description": null,
+                  "location": {
+                    "addressLine": null,
+                    "city": null,
+                    "coords": {
+                      "lat": null,
+                      "lng": null
+                    },
+                    "country": "Germany",
+                    "postalCode": null,
+                    "searchQuery": "Germany",
+                    "state": null
+                  },
+                  "status": null,
+                  "timestamp": "2024-02-16T08:24:00.000Z",
+                  "title": "Export parcel center"
+                },
+                {
+                  "description": null,
+                  "location": {
+                    "addressLine": null,
+                    "city": null,
+                    "coords": {
+                      "lat": null,
+                      "lng": null
+                    },
+                    "country": "Germany",
+                    "postalCode": null,
+                    "searchQuery": "Germany",
+                    "state": null
+                  },
+                  "status": null,
+                  "timestamp": "2024-02-14T19:40:00.000Z",
+                  "title": "Parcel center of origin"
+                },
+                {
+                  "description": null,
+                  "location": {
+                    "addressLine": null,
+                    "city": null,
+                    "coords": {
+                      "lat": null,
+                      "lng": null
+                    },
+                    "country": "",
+                    "postalCode": null,
+                    "searchQuery": null,
+                    "state": null
+                  },
+                  "status": {
+                    "data": {
+                      "description": "Order data transmitted electronically",
+                      "timestamp": null
+                    },
+                    "type": "created"
+                  },
+                  "timestamp": "2024-02-14T15:31:00.000Z",
+                  "title": "Order data transmitted electronically"
+                }
+              ],
+              "id": 8,
+              "lastUpdated": "2024-02-21T14:30:37.763294+00:00",
+              "name": "Panasonic Lumix DMC-GF1",
+              "origin": {
+                "addressLine": null,
+                "city": null,
+                "coords": {
+                  "lat": null,
+                  "lng": null
+                },
+                "country": "Germany",
+                "postalCode": null,
+                "searchQuery": "Germany",
+                "state": null
+              },
+              "status": {
+                "data": {
+                  "description": "Delivery successful",
+                  "to": null
+                },
+                "type": "delivered"
+              },
+              "trackingCode": "CA767344619DE",
+              "trackingUrl": "https://www.dhl.com/us-en/home/tracking/tracking-parcel.html?submit=1&tracking-id=CA767344619DE"
+            }
+        """.trimIndent()
                 ),
                 Parcel(
                     id = 0,
