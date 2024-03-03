@@ -70,8 +70,8 @@ fun SimpleParcelProgressPreview() {
 fun DetailedParcelProgress(
     parcel: Parcel,
     modifier: Modifier = Modifier,
-    color: Color = Color(parcel.onSurfaceDividerColor()),
-    trackColor: Color = Color(parcel.surfaceColor())
+    color: Color = Color(parcel.surfaceColor()),
+    trackColor: Color = Color(parcel.onSurfaceDividerColor())
 ) {
     Column(
         modifier = Modifier.then(modifier)
