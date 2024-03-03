@@ -31,10 +31,15 @@ import java.net.URI
  * @param modifier Component modifier attributes.
  */
 @Composable
-fun ParcelCard(parcel: Parcel, modifier: Modifier = Modifier) {
+fun ParcelCard(
+    parcel: Parcel,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+) {
     val lastParcelUpdate = parcel.trackingHistory[0]
 
     Card(
+        onClick = onClick,
         colors = CardDefaults.cardColors(
             containerColor = Color(parcel.surfaceColor())
         ),
@@ -45,6 +50,7 @@ fun ParcelCard(parcel: Parcel, modifier: Modifier = Modifier) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
+            // Heading.
             Column {
                 Text(
                     text = parcel.name,
@@ -56,6 +62,7 @@ fun ParcelCard(parcel: Parcel, modifier: Modifier = Modifier) {
                 )
             }
 
+            // Shows the progress of the parcel through the system so far.
             SimpleParcelProgress(
                 parcel = parcel,
                 modifier = Modifier
@@ -66,6 +73,7 @@ fun ParcelCard(parcel: Parcel, modifier: Modifier = Modifier) {
                     )
             )
 
+            // Last update information.
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
