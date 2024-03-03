@@ -26,7 +26,7 @@ fun ParcelDetailSheet(
     modifier: Modifier = Modifier,
     isVisible: Boolean = false,
     onDismissRequest: () -> Unit = {},
-    sheetState: SheetState = SheetState( true, Density(LocalContext.current))
+    sheetState: SheetState = SheetState( false, Density(LocalContext.current))
 ) {
     if (isVisible) {
         ModalBottomSheet(
